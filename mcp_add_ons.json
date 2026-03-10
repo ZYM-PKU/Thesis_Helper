@@ -1,0 +1,74 @@
+{
+  "inputs": [
+    {
+      "id": "CROSSREF_MAILTO",
+      "type": "promptString",
+      "description": "Email address used for Crossref polite pool requests",
+      "password": false
+    },
+    {
+      "id": "SEMANTIC_SCHOLAR_API_KEY",
+      "type": "promptString",
+      "password": true
+    },
+    {
+      "id": "UNPAYWALL_EMAIL",
+      "type": "promptString",
+      "description": "Email address for Unpaywall lookups used by paper-mcp",
+      "password": false
+    },
+    {
+      "id": "TAVILY_API_KEY",
+      "type": "promptString",
+      "description": "Your Tavily API key from tavily.com",
+      "password": true
+    },
+    {
+      "id": "DEFAULT_PARAMETERS",
+      "type": "promptString",
+      "description": "JSON string with default Tavily parameters",
+      "password": false
+    }
+  ],
+  "servers": {
+    "microsoft/markitdown": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["markitdown-mcp@0.0.1a4"]
+    },
+    "io.github.h-lu/crossref-cite-mcp": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["crossref-cite-mcp"],
+      "env": {
+        "CROSSREF_MAILTO": "${input:CROSSREF_MAILTO}"
+      }
+    },
+    "io.github.hy20191108/semantic-scholar-mcp": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["semantic-scholar-mcp"],
+      "env": {
+        "SEMANTIC_SCHOLAR_API_KEY": "${input:SEMANTIC_SCHOLAR_API_KEY}"
+      }
+    },
+    "io.github.imnotdev25/paper-mcp": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["paper-mcp"],
+      "env": {
+        "S2_API_KEY": "${input:SEMANTIC_SCHOLAR_API_KEY}",
+        "UNPAYWALL_EMAIL": "${input:UNPAYWALL_EMAIL}"
+      }
+    },
+    "io.github.tavily-ai/tavily-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["tavily-mcp@0.2.15"],
+      "env": {
+        "TAVILY_API_KEY": "${input:TAVILY_API_KEY}",
+        "DEFAULT_PARAMETERS": "${input:DEFAULT_PARAMETERS}"
+      }
+    }
+  }
+}
